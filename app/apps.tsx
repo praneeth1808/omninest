@@ -89,7 +89,7 @@ const apps = [
     name: "Health",
     icon: "heart",
     color: solidColors[4],
-    is_available: true,
+    is_available: false,
     path: "/health",
   },
   {

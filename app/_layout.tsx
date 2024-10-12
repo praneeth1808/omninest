@@ -22,16 +22,6 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
     <Tabs
       screenOptions={{
@@ -50,7 +40,7 @@ export default function RootLayout() {
             />
           ),
         }}
-      ></Tabs.Screen>
+      />
       <Tabs.Screen
         name="index"
         options={{
