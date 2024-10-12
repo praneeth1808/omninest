@@ -82,7 +82,7 @@ export default function RootLayout() {
       <Tabs.Screen
         name="budget/index"
         options={{
-          title: "Home",
+          title: "Budget",
           tabBarButton: () => null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
@@ -95,7 +95,7 @@ export default function RootLayout() {
       <Tabs.Screen
         name="+not-found"
         options={{
-          title: "Home",
+          title: "Oops!",
           tabBarButton: () => null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
