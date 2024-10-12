@@ -9,11 +9,9 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { useNavigation } from "@react-navigation/native"; // Import the useNavigation hook for navigation
-import { Link, useRouter } from "expo-router"; // Import Link or useRouter from expo-router
+import { useNavigation } from "@react-navigation/native";
+import { Href, useRouter } from "expo-router"; // Import useRouter for navigation
 
 // Get screen width and height using Dimensions API
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -56,6 +54,10 @@ const solidColors = [
   "#87CEEB",
 ];
 
+type PathItem = {
+  path: '"/apps/budget" | "/apps" | "/" | "/(tabs)" | "/(tabs)/" | "/(tabs)/apps" | "/_sitemap" | `./${string}` | `../${string}` | ".." | `${string}:${string}`';
+};
+
 // Updated list of apps with only 'Budget' available, others grayed out, and 'Nest' removed
 const apps = [
   {
@@ -64,7 +66,7 @@ const apps = [
     icon: "wallet",
     color: solidColors[3],
     is_available: true,
-    path: "/apps/budget",
+    path: "/budget",
   },
   {
     id: "2",
@@ -72,7 +74,7 @@ const apps = [
     icon: "cloud",
     color: solidColors[0],
     is_available: false,
-    path: "",
+    path: "/apps",
   },
   {
     id: "3",
@@ -80,15 +82,15 @@ const apps = [
     icon: "checkmark-done-circle",
     color: solidColors[2],
     is_available: false,
-    path: "",
+    path: "/apps",
   },
   {
     id: "4",
     name: "Health",
     icon: "heart",
     color: solidColors[4],
-    is_available: false,
-    path: "",
+    is_available: true,
+    path: "/health",
   },
   {
     id: "5",
@@ -96,7 +98,7 @@ const apps = [
     icon: "barbell",
     color: solidColors[5],
     is_available: false,
-    path: "",
+    path: "/apps",
   },
   {
     id: "6",
@@ -104,7 +106,7 @@ const apps = [
     icon: "partly-sunny",
     color: solidColors[6],
     is_available: false,
-    path: "",
+    path: "/apps",
   },
 ];
 
@@ -120,7 +122,7 @@ const calculateColumns = () => {
 
 // Define the Apps component
 export default function Apps() {
-  const router = useRouter(); // Use router for navigation
+  const router = useRouter(); // Use the router hook for navigation
   // Render each app item with an icon and name
   const renderItem = ({
     item,
@@ -145,6 +147,11 @@ export default function Apps() {
       ]}
       disabled={!item.is_available} // Disable TouchableOpacity if the app is not available
       activeOpacity={item.is_available ? 0.7 : 1} // Change opacity only for available apps
+      onPress={() => {
+        if (item.is_available && item.path) {
+          router.push(item.path.toString() as Href<string | object>); // Navigate to the appropriate path
+        }
+      }} // Navigate to the path when clicked, only if the app is available and the path is defined
     >
       {/* Icon container with conditional styling for availability */}
       <View
