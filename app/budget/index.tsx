@@ -1,18 +1,35 @@
+// budget/index.tsx
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import BudgetHeader from "@/components/Budget/BudgetHeader"; // Import BudgetHeader component
 import BudgetComponents from "@/components/Budget/BudgetComponents"; // Updated path for BudgetComponents container
+import BudgetEditModal from "@/components/Budget/BudgetEditModal"; // Updated path for BudgetEditModal component
+import Icon from "react-native-vector-icons/Ionicons"; // Import Ionicons for add button
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
+// Define a type for modalData
+interface ModalData {
+  title: string;
+  allocatedAmount: number;
+  targetAmount: number;
+  targetDate: string;
+  type: "Goal" | "Want" | "EmergencyFund";
+  index?: number; // Optional index
+}
+
 export default function BudgetPage(): JSX.Element {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState<boolean>(false); // State to manage the header's expand/collapse
-
-  // Toggle the expand/collapse state
-  const toggleHeader = (): void => {
-    setIsHeaderExpanded(!isHeaderExpanded);
-  };
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // State for modal visibility
+  const [modalData, setModalData] = useState<ModalData | null>(null); // Data for the currently editing component
+  const [isNewGoal, setIsNewGoal] = useState<boolean>(false); // State for adding a new goal
 
   const [components, setComponents] = useState([
     {
@@ -67,20 +84,17 @@ export default function BudgetPage(): JSX.Element {
   ]);
 
   // Function to handle adding an amount
-  const handleAddAmount = (index: number, amount: number): void => {
+  const handleAddAmount = (index: number): void => {
     const updatedComponents = [...components];
-    updatedComponents[index].allocatedAmount += amount;
+    updatedComponents[index].allocatedAmount += 100; // Add 100 for example
     setComponents(updatedComponents);
   };
 
   // Function to handle reducing an amount
-  const handleReduceAmount = (index: number, amount: number): void => {
+  const handleReduceAmount = (index: number): void => {
     const updatedComponents = [...components];
     if (updatedComponents[index].allocatedAmount > 0) {
-      updatedComponents[index].allocatedAmount = Math.max(
-        updatedComponents[index].allocatedAmount - amount,
-        0
-      ); // Prevent negative values
+      updatedComponents[index].allocatedAmount -= 100; // Reduce 100 for example
       setComponents(updatedComponents);
     }
   };
@@ -91,21 +105,42 @@ export default function BudgetPage(): JSX.Element {
     setComponents(updatedComponents);
   };
 
-  // Function to handle updating the title of a component
-  const handleUpdateTitle = (index: number, newTitle: string): void => {
-    const updatedComponents = [...components];
-    updatedComponents[index].title = newTitle;
-    setComponents(updatedComponents);
+  // Function to open the modal for editing
+  const handleEditComponent = (index: number): void => {
+    setIsNewGoal(false);
+    setModalData({ ...components[index], index } as ModalData); // Add type assertion
+    setIsModalVisible(true);
   };
 
-  // Function to handle updating the type of a component
-  const handleUpdateType = (
-    index: number,
-    newType: "Goal" | "Want" | "EmergencyFund"
-  ): void => {
-    const updatedComponents = [...components];
-    updatedComponents[index].type = newType;
-    setComponents(updatedComponents);
+  // Function to save the updated component
+  const handleSaveComponent = (updatedComponent: ModalData): void => {
+    if (isNewGoal) {
+      setComponents([...components, updatedComponent]); // Add a new goal
+    } else if (updatedComponent.index !== undefined) {
+      const updatedComponents = [...components];
+      updatedComponents[updatedComponent.index] = updatedComponent;
+      setComponents(updatedComponents); // Save edited component
+    }
+    setIsModalVisible(false);
+    setIsNewGoal(false);
+  };
+
+  // Function to handle adding a new goal
+  const handleAddNewGoal = (): void => {
+    setModalData({
+      title: "New Goal",
+      allocatedAmount: 0,
+      targetAmount: 1000,
+      targetDate: "Dec 2025",
+      type: "Goal",
+    });
+    setIsNewGoal(true);
+    setIsModalVisible(true);
+  };
+
+  // Toggle the expand/collapse state for the header
+  const toggleHeader = (): void => {
+    setIsHeaderExpanded(!isHeaderExpanded);
   };
 
   return (
@@ -140,17 +175,29 @@ export default function BudgetPage(): JSX.Element {
             targetAmount: component.targetAmount,
             targetDate: component.targetDate,
             type: component.type as "Goal" | "Want" | "EmergencyFund",
-            onAddAmount: (amount: number) => handleAddAmount(index, amount),
-            onReduceAmount: (amount: number) =>
-              handleReduceAmount(index, amount),
+            onAddAmount: () => handleAddAmount(index),
+            onReduceAmount: () => handleReduceAmount(index),
             onDeleteComponent: () => handleDeleteComponent(index),
-            onUpdateTitle: (newTitle: string) =>
-              handleUpdateTitle(index, newTitle),
-            onUpdateType: (newType: "Goal" | "Want" | "EmergencyFund") =>
-              handleUpdateType(index, newType),
+            onEditComponent: () => handleEditComponent(index), // Edit component
           }))}
         />
+        {/* Add new goal button */}
+        <View style={styles.addGoalContainer}>
+          <TouchableOpacity onPress={handleAddNewGoal}>
+            <Icon name="add-circle-outline" size={50} color="#00a000" />
+            <Text style={styles.addGoalText}>Add New Goal</Text>
+          </TouchableOpacity>
+        </View>
       </View>
+
+      {/* Modal for editing or adding components */}
+      {isModalVisible && modalData && (
+        <BudgetEditModal
+          componentData={modalData}
+          onSave={handleSaveComponent}
+          onClose={() => setIsModalVisible(false)} // Close modal when clicking outside or on X
+        />
+      )}
     </View>
   );
 }
@@ -166,5 +213,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     elevation: 5, // Shadow for Android
+  },
+  addGoalContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20, // Adjust as needed for spacing
+  },
+  addGoalText: {
+    fontSize: 16,
+    color: "#00a000",
+    marginTop: 10,
+    fontWeight: "bold",
   },
 });

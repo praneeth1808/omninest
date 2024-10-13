@@ -4,21 +4,20 @@ import BudgetComponent from "@/components/Budget/BudgetComponent"; // Import the
 
 // Define the props for each budget component data
 interface BudgetComponentData {
-  title: string; // Title for each component
+  title: string;
   allocatedAmount: number;
   targetAmount: number;
   targetDate: string;
   type: "Goal" | "Want" | "EmergencyFund";
-  onAddAmount: (amount: number) => void;
-  onReduceAmount: (amount: number) => void;
+  onAddAmount: () => void;
+  onReduceAmount: () => void;
   onDeleteComponent: () => void;
-  onUpdateTitle: (newTitle: string) => void;
-  onUpdateType: (newType: "Goal" | "Want" | "EmergencyFund") => void;
+  onEditComponent: () => void; // New edit function
 }
 
 // Define the props for the BudgetComponents container
 interface BudgetComponentsProps {
-  components: BudgetComponentData[]; // Correct type for components array
+  components: BudgetComponentData[];
 }
 
 export default function BudgetComponents({
@@ -38,7 +37,8 @@ export default function BudgetComponents({
         .map((component, index) => (
           <View key={index} style={styles.componentContainer}>
             <BudgetComponent
-              title={component.title} // Pass title to the component
+              key={index}
+              title={component.title}
               allocatedAmount={component.allocatedAmount}
               targetAmount={component.targetAmount}
               targetDate={component.targetDate}
@@ -46,8 +46,7 @@ export default function BudgetComponents({
               onAddAmount={component.onAddAmount}
               onReduceAmount={component.onReduceAmount}
               onDeleteComponent={component.onDeleteComponent}
-              onUpdateTitle={component.onUpdateTitle} // Pass the update title handler
-              onUpdateType={component.onUpdateType} // Pass the update type handler
+              onEditComponent={component.onEditComponent} // Pass edit function
             />
           </View>
         ))}
@@ -57,14 +56,14 @@ export default function BudgetComponents({
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    width: "100%", // Ensure the scroll container uses the full width of the parent
+    width: "100%",
   },
   componentContainer: {
-    width: "100%", // Each component takes up 100% of its parent
-    borderRadius: 10, // Slight rounding of the corners for a softer look
-    paddingLeft: 15, // Padding inside the border to ensure content is not touching the edges
-    paddingRight: 15, // Padding inside the border to ensure content is not touching the edges
-    paddingTop: 10, // Padding inside the border to ensure content is not touching the edges
-    elevation: 3, // Shadow for Android
+    width: "100%",
+    borderRadius: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 10,
+    elevation: 3,
   },
 });
