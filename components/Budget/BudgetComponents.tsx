@@ -1,6 +1,6 @@
 // components/Budget/BudgetComponents.tsx
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import BudgetComponent from "@/components/Budget/BudgetComponent"; // Import the individual budget component
 
 // Define the props for each budget component data
@@ -47,3 +47,17 @@ export default function BudgetComponents({
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  scrollContainer: {
+    width: "100%", // Ensure the scroll container uses the full width of the parent
+  },
+  componentContainer: {
+    width: "100%", // Each component takes up 100% of its parent
+    borderRadius: 10, // Slight rounding of the corners for a softer look
+    paddingLeft: 15, // Padding inside the border to ensure content is not touching the edges
+    paddingRight: 15, // Padding inside the border to ensure content is not touching the edges
+    paddingTop: 10, // Padding inside the border to ensure content is not touching the edges
+    elevation: 3, // Shadow for Android
+  },
+});
