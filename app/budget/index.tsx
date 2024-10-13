@@ -1,4 +1,3 @@
-// budget/index.tsx
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import BudgetHeader from "@/components/Budget/BudgetHeader"; // Import BudgetHeader component
@@ -68,17 +67,20 @@ export default function BudgetPage(): JSX.Element {
   ]);
 
   // Function to handle adding an amount
-  const handleAddAmount = (index: number): void => {
+  const handleAddAmount = (index: number, amount: number): void => {
     const updatedComponents = [...components];
-    updatedComponents[index].allocatedAmount += 100; // Add 100 for example
+    updatedComponents[index].allocatedAmount += amount;
     setComponents(updatedComponents);
   };
 
   // Function to handle reducing an amount
-  const handleReduceAmount = (index: number): void => {
+  const handleReduceAmount = (index: number, amount: number): void => {
     const updatedComponents = [...components];
     if (updatedComponents[index].allocatedAmount > 0) {
-      updatedComponents[index].allocatedAmount -= 100; // Reduce 100 for example
+      updatedComponents[index].allocatedAmount = Math.max(
+        updatedComponents[index].allocatedAmount - amount,
+        0
+      ); // Prevent negative values
       setComponents(updatedComponents);
     }
   };
@@ -86,6 +88,23 @@ export default function BudgetPage(): JSX.Element {
   // Function to handle deleting a component
   const handleDeleteComponent = (index: number): void => {
     const updatedComponents = components.filter((_, i) => i !== index);
+    setComponents(updatedComponents);
+  };
+
+  // Function to handle updating the title of a component
+  const handleUpdateTitle = (index: number, newTitle: string): void => {
+    const updatedComponents = [...components];
+    updatedComponents[index].title = newTitle;
+    setComponents(updatedComponents);
+  };
+
+  // Function to handle updating the type of a component
+  const handleUpdateType = (
+    index: number,
+    newType: "Goal" | "Want" | "EmergencyFund"
+  ): void => {
+    const updatedComponents = [...components];
+    updatedComponents[index].type = newType;
     setComponents(updatedComponents);
   };
 
@@ -121,9 +140,14 @@ export default function BudgetPage(): JSX.Element {
             targetAmount: component.targetAmount,
             targetDate: component.targetDate,
             type: component.type as "Goal" | "Want" | "EmergencyFund",
-            onAddAmount: () => handleAddAmount(index),
-            onReduceAmount: () => handleReduceAmount(index),
+            onAddAmount: (amount: number) => handleAddAmount(index, amount),
+            onReduceAmount: (amount: number) =>
+              handleReduceAmount(index, amount),
             onDeleteComponent: () => handleDeleteComponent(index),
+            onUpdateTitle: (newTitle: string) =>
+              handleUpdateTitle(index, newTitle),
+            onUpdateType: (newType: "Goal" | "Want" | "EmergencyFund") =>
+              handleUpdateType(index, newType),
           }))}
         />
       </View>

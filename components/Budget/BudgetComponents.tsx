@@ -1,4 +1,3 @@
-// components/Budget/BudgetComponents.tsx
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import BudgetComponent from "@/components/Budget/BudgetComponent"; // Import the individual budget component
@@ -10,9 +9,11 @@ interface BudgetComponentData {
   targetAmount: number;
   targetDate: string;
   type: "Goal" | "Want" | "EmergencyFund";
-  onAddAmount: () => void;
-  onReduceAmount: () => void;
+  onAddAmount: (amount: number) => void;
+  onReduceAmount: (amount: number) => void;
   onDeleteComponent: () => void;
+  onUpdateTitle: (newTitle: string) => void;
+  onUpdateType: (newType: "Goal" | "Want" | "EmergencyFund") => void;
 }
 
 // Define the props for the BudgetComponents container
@@ -37,7 +38,6 @@ export default function BudgetComponents({
         .map((component, index) => (
           <View key={index} style={styles.componentContainer}>
             <BudgetComponent
-              key={index}
               title={component.title} // Pass title to the component
               allocatedAmount={component.allocatedAmount}
               targetAmount={component.targetAmount}
@@ -46,6 +46,8 @@ export default function BudgetComponents({
               onAddAmount={component.onAddAmount}
               onReduceAmount={component.onReduceAmount}
               onDeleteComponent={component.onDeleteComponent}
+              onUpdateTitle={component.onUpdateTitle} // Pass the update title handler
+              onUpdateType={component.onUpdateType} // Pass the update type handler
             />
           </View>
         ))}
