@@ -92,36 +92,38 @@ export default function BudgetHeader({
 
       {/* Conditionally render the graph based on the expanded state */}
       {isExpanded && (
-        <LineChart
-          data={data}
-          width={screenWidth * 0.85} // Width now relative to the screen width
-          height={screenHeight * 0.15} // Reduced height to make the graph smaller
-          chartConfig={{
-            backgroundGradientFrom: "#f5f5f5",
-            backgroundGradientTo: "#f5f5f5",
-            color: () => `rgba(0, 160, 0, 0.4)`, // Lighter green tone for the graph
-            labelColor: () => `#333`, // Ensure label color is visible
-            decimalPlaces: 0,
-            strokeWidth: 1, // Decrease the line width for a lighter appearance
-            propsForDots: {
-              r: "2", // Decrease dot size
-              strokeWidth: "0", // Remove the dot border
-              stroke: "none", // Remove the stroke for lighter dots
-            },
-            // Y-axis and X-axis label font size adjustment
-            propsForVerticalLabels: {
-              fontSize: 8, // Very small font for Y-axis labels
-            },
-            propsForHorizontalLabels: {
-              fontSize: 8, // Very small font for X-axis labels
-            },
-          }}
-          bezier // Smoothens the graph lines
-          withVerticalLines={false} // Remove vertical grid lines
-          withHorizontalLines={false} // Remove horizontal grid lines
-          withHorizontalLabels={true} // Ensure X-axis labels are visible
-          style={styles.graphStyle}
-        />
+        <View style={styles.graphContainer}>
+          <LineChart
+            data={data}
+            width={screenWidth * 0.85} // Width now relative to the screen width
+            height={screenHeight * 0.2} // Reduced height to make the graph smaller
+            chartConfig={{
+              backgroundGradientFrom: "#f5f5f5",
+              backgroundGradientTo: "#f5f5f5",
+              color: () => `rgba(0, 160, 0, 0.4)`, // Lighter green tone for the graph
+              labelColor: () => `#333`, // Ensure label color is visible
+              decimalPlaces: 0,
+              strokeWidth: 1, // Decrease the line width for a lighter appearance
+              propsForDots: {
+                r: "2", // Decrease dot size
+                strokeWidth: "0", // Remove the dot border
+                stroke: "none", // Remove the stroke for lighter dots
+              },
+              // Y-axis and X-axis label font size adjustment
+              propsForVerticalLabels: {
+                fontSize: 8, // Very small font for Y-axis labels
+              },
+              propsForHorizontalLabels: {
+                fontSize: 8, // Very small font for X-axis labels
+              },
+            }}
+            bezier // Smoothens the graph lines
+            withVerticalLines={false} // Remove vertical grid lines
+            withHorizontalLines={false} // Remove horizontal grid lines
+            withHorizontalLabels={true} // Ensure X-axis labels are visible
+            style={styles.graphStyle}
+          />
+        </View>
       )}
 
       {/* Expand/Collapse Indicator */}
@@ -170,10 +172,13 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.015, // Reduced button margin
   },
   graphStyle: {
-    marginTop: screenHeight * 0.01, // Reduced graph margin relative to height
-    marginBottom: screenHeight * 0.01, // Added padding to the bottom to prevent overlap
     paddingBottom: 12, // Extra padding for X-axis labels
     borderRadius: 10,
+  },
+  graphContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   expandCollapseIcon: {
     alignSelf: "center", // Center the expand/collapse icon

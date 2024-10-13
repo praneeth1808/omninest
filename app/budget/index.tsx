@@ -94,7 +94,7 @@ export default function BudgetPage(): JSX.Element {
       {/* Use BudgetHeader component and pass the expanded state */}
       <View
         style={{
-          height: isHeaderExpanded ? screenHeight * 0.27 : screenHeight * 0.07, // Adjust height dynamically
+          height: isHeaderExpanded ? screenHeight * 0.29 : screenHeight * 0.07, // Adjust height dynamically
         }}
       >
         <BudgetHeader
