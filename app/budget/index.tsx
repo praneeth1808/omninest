@@ -7,14 +7,6 @@ import BudgetComponents from "@/components/Budget/BudgetComponents"; // Updated 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-// Define the exact types for budget component
-interface BudgetComponentData {
-  allocatedAmount: number;
-  targetAmount: number;
-  targetDate: string;
-  type: "Goal" | "Want" | "EmergencyFund"; // Strict union of string literals
-}
-
 export default function BudgetPage(): JSX.Element {
   const [isHeaderExpanded, setIsHeaderExpanded] = useState<boolean>(false); // State to manage the header's expand/collapse
 
@@ -23,31 +15,55 @@ export default function BudgetPage(): JSX.Element {
     setIsHeaderExpanded(!isHeaderExpanded);
   };
 
-  // Example data for the budget components (explicitly typed)
-  const [components, setComponents] = useState<BudgetComponentData[]>([
+  const [components, setComponents] = useState([
     {
+      title: "Saving for a Car",
       allocatedAmount: 300,
       targetAmount: 500,
       targetDate: "Dec 2024",
-      type: "Goal", // Correct type here
+      type: "Goal",
     },
     {
+      title: "Vacation Fund",
       allocatedAmount: 200,
       targetAmount: 300,
       targetDate: "Nov 2024",
-      type: "Goal", // Correct type here
+      type: "Goal",
     },
     {
+      title: "New Laptop",
       allocatedAmount: 100,
       targetAmount: 500,
       targetDate: "Oct 2024",
-      type: "Want", // Correct type here
+      type: "Want",
     },
     {
+      title: "Emergency Savings",
       allocatedAmount: 150,
       targetAmount: 200,
       targetDate: "Jan 2025",
-      type: "EmergencyFund", // Correct type here
+      type: "EmergencyFund",
+    },
+    {
+      title: "Home Renovation",
+      allocatedAmount: 500,
+      targetAmount: 1000,
+      targetDate: "Aug 2025",
+      type: "Goal",
+    },
+    {
+      title: "Wedding Expenses",
+      allocatedAmount: 400,
+      targetAmount: 1500,
+      targetDate: "May 2025",
+      type: "Want",
+    },
+    {
+      title: "College Fund",
+      allocatedAmount: 800,
+      targetAmount: 2000,
+      targetDate: "Dec 2026",
+      type: "EmergencyFund",
     },
   ]);
 
@@ -100,10 +116,11 @@ export default function BudgetPage(): JSX.Element {
         {/* Display budget components and pass width percentage */}
         <BudgetComponents
           components={components.map((component, index) => ({
+            title: component.title,
             allocatedAmount: component.allocatedAmount,
             targetAmount: component.targetAmount,
             targetDate: component.targetDate,
-            type: component.type, // This is now strictly typed
+            type: component.type as "Goal" | "Want" | "EmergencyFund",
             onAddAmount: () => handleAddAmount(index),
             onReduceAmount: () => handleReduceAmount(index),
             onDeleteComponent: () => handleDeleteComponent(index),

@@ -5,6 +5,7 @@ import BudgetComponent from "@/components/Budget/BudgetComponent"; // Import the
 
 // Define the props for each budget component data
 interface BudgetComponentData {
+  title: string; // Title for each component
   allocatedAmount: number;
   targetAmount: number;
   targetDate: string;
@@ -37,6 +38,7 @@ export default function BudgetComponents({
           <View key={index} style={styles.componentContainer}>
             <BudgetComponent
               key={index}
+              title={component.title} // Pass title to the component
               allocatedAmount={component.allocatedAmount}
               targetAmount={component.targetAmount}
               targetDate={component.targetDate}

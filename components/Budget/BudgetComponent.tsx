@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 
 interface BudgetComponentProps {
+  title: string;
   allocatedAmount: number;
   targetAmount: number;
   targetDate: string;
@@ -19,6 +20,7 @@ interface BudgetComponentProps {
 }
 
 export default function BudgetComponent({
+  title,
   allocatedAmount,
   targetAmount,
   targetDate,
