@@ -1,4 +1,4 @@
-// components/BudgetComponent.tsx
+// components/Budget/BudgetComponent.tsx
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"; // Import icons for edit/delete
@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 
 interface BudgetComponentProps {
+  title: string; // New title prop
   allocatedAmount: number;
   targetAmount: number;
   targetDate: string;
@@ -16,10 +17,10 @@ interface BudgetComponentProps {
   onAddAmount: () => void;
   onReduceAmount: () => void;
   onDeleteComponent: () => void;
-  widthPercentage: number; // New prop to set width dynamically
 }
 
 export default function BudgetComponent({
+  title, // Use title instead of type
   allocatedAmount,
   targetAmount,
   targetDate,
@@ -27,7 +28,6 @@ export default function BudgetComponent({
   onAddAmount,
   onReduceAmount,
   onDeleteComponent,
-  widthPercentage, // Use the prop for dynamic width
 }: BudgetComponentProps): JSX.Element {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -49,9 +49,9 @@ export default function BudgetComponent({
   const progress: number = allocatedAmount / targetAmount;
 
   return (
-    <View style={[styles.container, { width: `${widthPercentage}%` }]}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{type}</Text>
+        <Text style={styles.title}>{title}</Text> {/* Render the title */}
         <View style={styles.actions}>
           <TouchableOpacity onPress={() => setIsEditing(true)}>
             <Icon name="create-outline" size={22} color={getColor()} />
@@ -79,7 +79,7 @@ export default function BudgetComponent({
         <Modal transparent={true} animationType="slide">
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <Text>Edit {type} Amounts</Text>
+              <Text>Edit {title} Amounts</Text>
               <TouchableOpacity onPress={onAddAmount}>
                 <Text>Add Amount</Text>
               </TouchableOpacity>
@@ -99,6 +99,7 @@ export default function BudgetComponent({
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%", // Full width of the parent container
     marginVertical: 12,
     padding: 15,
     borderRadius: 15, // Rounded corners for a more card-like appearance
