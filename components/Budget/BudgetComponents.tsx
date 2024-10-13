@@ -1,3 +1,4 @@
+//components/Budget/BudgetComponents.tsx
 import React from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import BudgetComponent from "@/components/Budget/BudgetComponent"; // Import the individual budget component
