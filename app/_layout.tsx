@@ -1,3 +1,5 @@
+// app/index.tsx
+
 import { Tabs } from "expo-router";
 import {
   DarkTheme,

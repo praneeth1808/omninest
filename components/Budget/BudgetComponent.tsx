@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     padding: 15,
     borderRadius: 15, // Rounded corners for a more card-like appearance
-    backgroundColor: "#ffffff", // White background for the card
+    backgroundColor: "#ffffffa8", // White background for the card
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

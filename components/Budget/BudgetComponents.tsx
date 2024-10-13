@@ -24,7 +24,10 @@ export default function BudgetComponents({
   components,
 }: BudgetComponentsProps): JSX.Element {
   return (
-    <ScrollView style={styles.scrollContainer}>
+    <ScrollView
+      style={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}
+    >
       {components
         .sort((a, b) => {
           // Sorting logic to ensure goals come first, followed by wants, then emergency funds
@@ -55,10 +58,10 @@ const styles = StyleSheet.create({
   },
   componentContainer: {
     width: "100%", // Each component takes up 100% of its parent
-    marginBottom: 15, // Add spacing between components
     borderRadius: 10, // Slight rounding of the corners for a softer look
-    padding: 10, // Padding inside the border to ensure content is not touching the edges
-    backgroundColor: "#e0f7f8", // White background for each component
+    paddingLeft: 15, // Padding inside the border to ensure content is not touching the edges
+    paddingRight: 15, // Padding inside the border to ensure content is not touching the edges
+    paddingTop: 10, // Padding inside the border to ensure content is not touching the edges
     elevation: 3, // Shadow for Android
   },
 });

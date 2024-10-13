@@ -135,21 +135,13 @@ export default function BudgetPage(): JSX.Element {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2", // Soft neutral background
+    backgroundColor: "#e4e4e4", // Set background to a light gray tone
     paddingTop: 50, // Padding to prevent overlap with the top status bar
   },
   budgetContent: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e0f7f8", // Slight blue tone for content background
-    borderRadius: 20,
     alignSelf: "center",
-    borderWidth: 1, // Add green accent to the border
-    borderColor: "#00a000", // Minimal green accent
-    shadowColor: "#000", // Add shadow for depth
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
     elevation: 5, // Shadow for Android
   },
 });
