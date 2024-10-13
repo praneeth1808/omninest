@@ -57,6 +57,7 @@ export default function BudgetComponents({
 const styles = StyleSheet.create({
   scrollContainer: {
     width: "100%",
+    marginBottom: 70,
   },
   componentContainer: {
     width: "100%",
