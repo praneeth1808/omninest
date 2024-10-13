@@ -1,49 +1,113 @@
-// app/apps/budget/index.tsx
+// budget/index.tsx
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
-import BudgetHeader from "@/components/Budget/BudgetHeader"; // Import expanded BudgetHeader
-import BudgetHeaderCollapsed from "@/components/Budget/BudgetHeaderCollapsed"; // Import collapsed BudgetHeader
+import { View, StyleSheet, Dimensions, Text } from "react-native";
+import BudgetHeader from "@/components/Budget/BudgetHeader"; // Import BudgetHeader component
+import BudgetComponents from "@/components/Budget/BudgetComponents"; // Updated path for BudgetComponents container
 
-export default function BudgetPage() {
-  const [headerCollapsed, setHeaderCollapsed] = useState(false); // State to toggle header
+const screenHeight = Dimensions.get("window").height;
 
-  const screenHeight = Dimensions.get("window").height;
+// Define the exact types for budget component
+interface BudgetComponentData {
+  allocatedAmount: number;
+  targetAmount: number;
+  targetDate: string;
+  type: "Goal" | "Want" | "EmergencyFund"; // Strict union of string literals
+}
 
-  // Function to toggle the header
-  const toggleHeader = () => {
-    setHeaderCollapsed(!headerCollapsed);
+export default function BudgetPage(): JSX.Element {
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState<boolean>(false); // State to manage the header's expand/collapse
+
+  // Toggle the expand/collapse state
+  const toggleHeader = (): void => {
+    setIsHeaderExpanded(!isHeaderExpanded);
+  };
+
+  // Example data for the budget components (explicitly typed)
+  const [components, setComponents] = useState<BudgetComponentData[]>([
+    {
+      allocatedAmount: 300,
+      targetAmount: 500,
+      targetDate: "Dec 2024",
+      type: "Goal", // Correct type here
+    },
+    {
+      allocatedAmount: 200,
+      targetAmount: 300,
+      targetDate: "Nov 2024",
+      type: "Goal", // Correct type here
+    },
+    {
+      allocatedAmount: 100,
+      targetAmount: 500,
+      targetDate: "Oct 2024",
+      type: "Want", // Correct type here
+    },
+    {
+      allocatedAmount: 150,
+      targetAmount: 200,
+      targetDate: "Jan 2025",
+      type: "EmergencyFund", // Correct type here
+    },
+  ]);
+
+  // Function to handle adding an amount
+  const handleAddAmount = (index: number): void => {
+    const updatedComponents = [...components];
+    updatedComponents[index].allocatedAmount += 100; // Add 100 for example
+    setComponents(updatedComponents);
+  };
+
+  // Function to handle reducing an amount
+  const handleReduceAmount = (index: number): void => {
+    const updatedComponents = [...components];
+    if (updatedComponents[index].allocatedAmount > 0) {
+      updatedComponents[index].allocatedAmount -= 100; // Reduce 100 for example
+      setComponents(updatedComponents);
+    }
+  };
+
+  // Function to handle deleting a component
+  const handleDeleteComponent = (index: number): void => {
+    const updatedComponents = components.filter((_, i) => i !== index);
+    setComponents(updatedComponents);
   };
 
   return (
     <View style={styles.container}>
-      {/* Collapsible Header - switch between BudgetHeaderCollapsed and BudgetHeader */}
-      <TouchableOpacity onPress={toggleHeader}>
-        <View
-          style={{
-            height: headerCollapsed ? screenHeight * 0.1 : screenHeight * 0.25,
-          }}
-        >
-          {headerCollapsed ? <BudgetHeaderCollapsed /> : <BudgetHeader />}
-        </View>
-      </TouchableOpacity>
+      {/* Use BudgetHeader component and pass the expanded state */}
+      <View
+        style={{
+          height: isHeaderExpanded ? screenHeight * 0.27 : screenHeight * 0.07, // Adjust height dynamically
+        }}
+      >
+        <BudgetHeader
+          isExpanded={isHeaderExpanded}
+          toggleExpanded={toggleHeader}
+        />
+      </View>
+
       {/* Bottom section adjusts dynamically based on header height */}
       <View
         style={[
           styles.budgetContent,
           {
-            height: headerCollapsed ? screenHeight * 0.81 : screenHeight * 0.66,
+            height: isHeaderExpanded ? screenHeight * 0.6 : screenHeight * 0.8,
           },
         ]}
       >
-        <Text style={styles.text}>
-          This is where the Budget details will go.
-        </Text>
+        {/* Display budget components and pass width percentage */}
+        <BudgetComponents
+          components={components.map((component, index) => ({
+            allocatedAmount: component.allocatedAmount,
+            targetAmount: component.targetAmount,
+            targetDate: component.targetDate,
+            type: component.type, // This is now strictly typed
+            onAddAmount: () => handleAddAmount(index),
+            onReduceAmount: () => handleReduceAmount(index),
+            onDeleteComponent: () => handleDeleteComponent(index),
+            widthPercentage: 90, // Passing width percentage (85-90%)
+          }))}
+        />
       </View>
     </View>
   );
@@ -53,17 +117,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2", // Soft neutral background
-    paddingBottom: 20, // Padding to prevent overlap with the bottom tab
-    marginTop: 25, // Add margin to prevent overlap with the top header
+    paddingTop: 50, // Padding to prevent overlap with the top status bar
   },
   budgetContent: {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#e0f7f8", // Slight blue tone for content background
     borderRadius: 20,
-    width: "90%",
+    width: "95%", // Adjusted width relative to parent
     alignSelf: "center",
-    padding: 30,
+    padding: 20, // Reduce padding for better space utilization
     borderWidth: 1, // Add green accent to the border
     borderColor: "#00a000", // Minimal green accent
     shadowColor: "#000", // Add shadow for depth
@@ -71,10 +134,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5, // Shadow for Android
-  },
-  text: {
-    fontSize: 18,
-    color: "#333",
-    textAlign: "center",
   },
 });
