@@ -51,7 +51,7 @@ export default function BudgetComponent({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{type}</Text>
+        <Text style={styles.title}>{title}</Text>
         <View style={styles.actions}>
           <TouchableOpacity onPress={() => setIsEditing(true)}>
             <Icon name="create-outline" size={22} color={getColor()} />
