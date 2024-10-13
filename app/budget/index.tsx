@@ -15,7 +15,6 @@ export default function BudgetPage(): JSX.Element {
     setIsHeaderExpanded(!isHeaderExpanded);
   };
 
-  // Example data for the budget components (with additional components)
   const [components, setComponents] = useState([
     {
       title: "Saving for a Car",
@@ -95,7 +94,7 @@ export default function BudgetPage(): JSX.Element {
       {/* Use BudgetHeader component and pass the expanded state */}
       <View
         style={{
-          height: isHeaderExpanded ? screenHeight * 0.27 : screenHeight * 0.07, // Adjust height dynamically
+          height: isHeaderExpanded ? screenHeight * 0.29 : screenHeight * 0.07, // Adjust height dynamically
         }}
       >
         <BudgetHeader
@@ -110,18 +109,18 @@ export default function BudgetPage(): JSX.Element {
           styles.budgetContent,
           {
             height: isHeaderExpanded ? screenHeight * 0.6 : screenHeight * 0.8,
-            width: screenWidth, // Dynamically use 100% of screen width for the parent
+            width: screenWidth,
           },
         ]}
       >
         {/* Display budget components */}
         <BudgetComponents
           components={components.map((component, index) => ({
-            title: component.title, // Pass title to the component
+            title: component.title,
             allocatedAmount: component.allocatedAmount,
             targetAmount: component.targetAmount,
             targetDate: component.targetDate,
-            type: component.type as "Goal" | "Want" | "EmergencyFund", // Explicitly type the 'type' property
+            type: component.type as "Goal" | "Want" | "EmergencyFund",
             onAddAmount: () => handleAddAmount(index),
             onReduceAmount: () => handleReduceAmount(index),
             onDeleteComponent: () => handleDeleteComponent(index),

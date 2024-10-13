@@ -9,7 +9,7 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 
 interface BudgetComponentProps {
-  title: string; // New title prop
+  title: string;
   allocatedAmount: number;
   targetAmount: number;
   targetDate: string;
@@ -20,7 +20,7 @@ interface BudgetComponentProps {
 }
 
 export default function BudgetComponent({
-  title, // Use title instead of type
+  title,
   allocatedAmount,
   targetAmount,
   targetDate,
@@ -51,7 +51,7 @@ export default function BudgetComponent({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text> {/* Render the title */}
+        <Text style={styles.title}>{title}</Text>
         <View style={styles.actions}>
           <TouchableOpacity onPress={() => setIsEditing(true)}>
             <Icon name="create-outline" size={22} color={getColor()} />

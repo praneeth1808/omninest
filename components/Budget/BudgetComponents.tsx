@@ -37,6 +37,7 @@ export default function BudgetComponents({
         .map((component, index) => (
           <View key={index} style={styles.componentContainer}>
             <BudgetComponent
+              key={index}
               title={component.title} // Pass title to the component
               allocatedAmount={component.allocatedAmount}
               targetAmount={component.targetAmount}
