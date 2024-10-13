@@ -16,7 +16,6 @@ interface BudgetComponentProps {
   onAddAmount: () => void;
   onReduceAmount: () => void;
   onDeleteComponent: () => void;
-  widthPercentage: number; // New prop to set width dynamically
 }
 
 export default function BudgetComponent({
@@ -27,7 +26,6 @@ export default function BudgetComponent({
   onAddAmount,
   onReduceAmount,
   onDeleteComponent,
-  widthPercentage, // Use the prop for dynamic width
 }: BudgetComponentProps): JSX.Element {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -49,7 +47,7 @@ export default function BudgetComponent({
   const progress: number = allocatedAmount / targetAmount;
 
   return (
-    <View style={[styles.container, { width: `${widthPercentage}%` }]}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{type}</Text>
         <View style={styles.actions}>

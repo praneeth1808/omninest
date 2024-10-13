@@ -12,7 +12,6 @@ interface BudgetComponentData {
   onAddAmount: () => void;
   onReduceAmount: () => void;
   onDeleteComponent: () => void;
-  widthPercentage: number; // New prop for dynamic width percentage
 }
 
 // Define the props for the BudgetComponents container
@@ -24,7 +23,10 @@ export default function BudgetComponents({
   components,
 }: BudgetComponentsProps): JSX.Element {
   return (
-    <ScrollView>
+    <ScrollView
+      style={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}
+    >
       {components
         .sort((a, b) => {
           // Sorting logic to ensure goals come first, followed by wants, then emergency funds
@@ -32,17 +34,18 @@ export default function BudgetComponents({
           return order[a.type] - order[b.type];
         })
         .map((component, index) => (
-          <BudgetComponent
-            key={index}
-            allocatedAmount={component.allocatedAmount}
-            targetAmount={component.targetAmount}
-            targetDate={component.targetDate}
-            type={component.type}
-            onAddAmount={component.onAddAmount}
-            onReduceAmount={component.onReduceAmount}
-            onDeleteComponent={component.onDeleteComponent}
-            widthPercentage={component.widthPercentage} // Dynamic width passed from parent
-          />
+          <View key={index} style={styles.componentContainer}>
+            <BudgetComponent
+              key={index}
+              allocatedAmount={component.allocatedAmount}
+              targetAmount={component.targetAmount}
+              targetDate={component.targetDate}
+              type={component.type}
+              onAddAmount={component.onAddAmount}
+              onReduceAmount={component.onReduceAmount}
+              onDeleteComponent={component.onDeleteComponent}
+            />
+          </View>
         ))}
     </ScrollView>
   );

@@ -1,9 +1,10 @@
 // budget/index.tsx
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions, Text } from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import BudgetHeader from "@/components/Budget/BudgetHeader"; // Import BudgetHeader component
 import BudgetComponents from "@/components/Budget/BudgetComponents"; // Updated path for BudgetComponents container
 
+const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 // Define the exact types for budget component
@@ -92,6 +93,7 @@ export default function BudgetPage(): JSX.Element {
           styles.budgetContent,
           {
             height: isHeaderExpanded ? screenHeight * 0.6 : screenHeight * 0.8,
+            width: screenWidth,
           },
         ]}
       >
@@ -105,7 +107,6 @@ export default function BudgetPage(): JSX.Element {
             onAddAmount: () => handleAddAmount(index),
             onReduceAmount: () => handleReduceAmount(index),
             onDeleteComponent: () => handleDeleteComponent(index),
-            widthPercentage: 90, // Passing width percentage (85-90%)
           }))}
         />
       </View>
