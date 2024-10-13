@@ -157,6 +157,17 @@ export default function BudgetPage(): JSX.Element {
         />
       </View>
 
+      {/* Add new goal button */}
+      <View style={styles.addGoalContainer}>
+        <TouchableOpacity
+          onPress={handleAddNewGoal}
+          style={styles.addGoalButton}
+        >
+          <Icon name="add-circle-outline" size={20} color="#00a000" />
+          <Text style={styles.addGoalText}>Add New Goal</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Bottom section adjusts dynamically based on header height */}
       <View
         style={[
@@ -181,13 +192,6 @@ export default function BudgetPage(): JSX.Element {
             onEditComponent: () => handleEditComponent(index), // Edit component
           }))}
         />
-        {/* Add new goal button */}
-        <View style={styles.addGoalContainer}>
-          <TouchableOpacity onPress={handleAddNewGoal}>
-            <Icon name="add-circle-outline" size={50} color="#00a000" />
-            <Text style={styles.addGoalText}>Add New Goal</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       {/* Modal for editing or adding components */}
@@ -206,7 +210,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#e4e4e4", // Set background to a light gray tone
-    paddingTop: 50, // Padding to prevent overlap with the top status bar
+    paddingTop: 70, // Padding to prevent overlap with the top status bar
   },
   budgetContent: {
     justifyContent: "center",
@@ -215,14 +219,20 @@ const styles = StyleSheet.create({
     elevation: 5, // Shadow for Android
   },
   addGoalContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20, // Adjust as needed for spacing
+    flexDirection: "row", // Aligns icon and text in the same line
+    justifyContent: "flex-end", // Aligns the content to the right
+    alignItems: "center", // Centers the items vertically
+    marginTop: 15, // Adjust as needed for spacing
+    paddingRight: 20, // Adds padding on the right for alignment
+  },
+  addGoalButton: {
+    flexDirection: "row", // Align icon and text horizontally
+    alignItems: "center", // Vertically center the text with the icon
   },
   addGoalText: {
-    fontSize: 16,
+    fontSize: 11, // Reduced font size for the text
     color: "#00a000",
-    marginTop: 10,
+    marginLeft: 5, // Space between the icon and text
     fontWeight: "bold",
   },
 });
